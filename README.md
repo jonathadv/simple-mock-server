@@ -7,8 +7,10 @@ No `pip install`, no high-version-specific dependencies! Just run it as regular 
 
 ### Features
 * Support to methods GET, POST, PUT and DELETE.
-* Support to any HTML/JSON/String-whatever you can put as string (maybe some string encoding issue can come up).
+* Support to custom response body with any HTML/JSON/whatever-type you can put as string (maybe some string encoding issue can come up).
 * Support to any HTTP response code including the ability to HTTP redirect.
+* Support to add any custom header.
+* Support to CORS by adding the header `Access-Control-Allow-Origin`.
 
 ### Requirements
 * Python 2.7 (tested with Python 2.7.5)
