@@ -16,13 +16,40 @@ No `pip install`, no high-version-specific dependencies! Just run it as regular 
 ### Usage
 ```bash
 # Run as a regular python script
-   ./simple-mock-server.py
+./simple-mock-server.py
+
+Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8080
+127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /status HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "POST /add HTTP/1.1" 201 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "PUT /update HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "DELETE /remove HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /redirect HTTP/1.1" 302 -
+
 ```
-### Before running it
+You can test you server as it is by running the file `test_calls.sh` right before getting it:
+```bash
+./test_calls.sh
+Reading configuration file 'simple_mock_server_conf.json'...
+Testing calls against http://127.0.0.1:8080...
+
+{ "type":"GET", "status": "OK" }
+{ "type":"POST", "status": "Created!" }
+{ "type":"PUT", "status": "updated!" }
+{ "type":"DELETE", "status": "Removed!" }
+
+HTTP/1.0 302 Found
+Server: BaseHTTP/0.3 Python/2.7.9
+Date: Thu, 29 Jun 2017 05:00:44 GMT
+Content-Type: Application/JSON
+location: https://github.com/jonathadv/simple-mock-server
+
+```
+
+
+### Before running it for your own needs...
 Open the configuration file `simple_mock_server_conf.json` and fill it with your mock data following the examples.
 
 
----
 ### Configuration file sample
 ```
 {
