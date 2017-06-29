@@ -29,8 +29,11 @@
             "method":"GET",
             "path":"/redirect",
             "responseCode":302,
-            "body":null,
+            "body":"{\"type\":\"redirect\"}",
             "headers":[
+                {
+                    "Content-Type":"Application/JSON"
+                },
                 {
                     "location":"https://github.com/jonathadv/simple-mock-server"
                 }
