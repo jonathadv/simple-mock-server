@@ -1,7 +1,7 @@
 # simple-mock-server
 Simple server to mock HTTP response
 
-The idea is to have the simplest HTTP server with the simplest configuration, which can run anywhere with Python2 installed, and with all the useful resources in a mock server.
+The idea is to have the simplest HTTP server with the simplest configuration, which you can run anywhere with Python2 installed, and with all the useful resources in a mock server.
 
 No `pip install`, no high-version-specific dependencies! Just run it as regular Python 2 script
 
