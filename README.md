@@ -26,9 +26,9 @@ Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8080
 127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /redirect HTTP/1.1" 302 -
 
 ```
-You can test you server as it is by running the file `test_calls.sh` right before getting it:
+You can test the server as it is by running the file `test-simple-mock-server.sh` right before getting it:
 ```bash
-./test_calls.sh
+./test-simple-mock-server.sh
 Reading configuration file 'simple_mock_server_conf.json'...
 Testing calls against http://127.0.0.1:8080...
 
