@@ -16,12 +16,27 @@
         },
         {
             "method":"GET",
+            "path":"/cors-test",
+            "body":"{ \"type\":\"GET\", \"status\": \"OK\", \"message\": \"CORS worked!\" }",
+            "responseCode":200,
+            "headers":[
+                {
+                   "Access-Control-Allow-Origin":"*"
+                },
+                {
+                    "Content-Type":"text/html; charset=UTF-8"
+                }
+            ]
+        },
+
+        {
+            "method":"GET",
             "path":"/status",
             "responseCode":200,
             "body":"{ \"type\":\"GET\", \"status\": \"OK\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         },
@@ -32,7 +47,7 @@
             "body":"{\"type\":\"redirect\"}",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 },
                 {
                     "location":"https://github.com/jonathadv/simple-mock-server"
@@ -46,7 +61,7 @@
             "body":"{ \"type\":\"POST\", \"status\": \"Created!\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         },
@@ -57,7 +72,7 @@
             "body":"{ \"type\":\"PUT\", \"status\": \"updated!\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         },
@@ -68,7 +83,7 @@
             "body":"{ \"type\":\"DELETE\", \"status\": \"Removed!\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         }
