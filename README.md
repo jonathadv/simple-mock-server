@@ -1,4 +1,4 @@
-# simple-mock-server
+kate sim        # simple-mock-server
 Simple server to mock HTTP response
 
 The idea is to have the simplest HTTP server with the simplest configuration, which you can run anywhere with Python2 installed, and with all the useful resources in a mock server.
@@ -55,7 +55,7 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
 {
 
     "hostname":"127.0.0.1",
-    "port":8080,
+    "port":8000,
     "responses":[
         {
             "method":"GET",
@@ -70,12 +70,27 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
         },
         {
             "method":"GET",
+            "path":"/cors-test",
+            "body":"{ \"type\":\"GET\", \"status\": \"OK\", \"message\": \"CORS worked!\" }",
+            "responseCode":200,
+            "headers":[
+                {
+                   "Access-Control-Allow-Origin":"*"
+                },
+                {
+                    "Content-Type":"text/html; charset=UTF-8"
+                }
+            ]
+        },
+
+        {
+            "method":"GET",
             "path":"/status",
             "responseCode":200,
             "body":"{ \"type\":\"GET\", \"status\": \"OK\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         },
@@ -83,8 +98,11 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
             "method":"GET",
             "path":"/redirect",
             "responseCode":302,
-            "body":null,
+            "body":"{\"type\":\"redirect\"}",
             "headers":[
+                {
+                    "Content-Type":"application/json"
+                },
                 {
                     "location":"https://github.com/jonathadv/simple-mock-server"
                 }
@@ -97,7 +115,7 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
             "body":"{ \"type\":\"POST\", \"status\": \"Created!\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         },
@@ -108,7 +126,7 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
             "body":"{ \"type\":\"PUT\", \"status\": \"updated!\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         },
@@ -119,7 +137,7 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
             "body":"{ \"type\":\"DELETE\", \"status\": \"Removed!\" }",
             "headers":[
                 {
-                    "Content-Type":"Application/JSON"
+                    "Content-Type":"application/json"
                 }
             ]
         }
