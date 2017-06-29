@@ -1,4 +1,52 @@
 {
+
     "hostname":"127.0.0.1",
-    "port": 8124 
+    "port":8124,
+    "responses":[
+        {
+            "method":"GET",
+            "path":"/",
+            "responseCode":200,
+            "body":"<html><head></head><title>Simple Mock Server test</title><body><h1>GET! It works!</h1></body></html>",
+            "headers":[
+                {
+                    "Content-Type":"text/html; charset=UTF-8"
+                }
+            ]
+        },
+        {
+            "method":"GET",
+            "path":"/status",
+            "responseCode":200,
+            "body":"{ \"type\":\"GET\", \"status\": \"OK\" }",
+            "headers":[
+                {
+                    "Content-Type":"Application/JSON"
+                }
+            ]
+        },
+        {
+            "method":"POST",
+            "path":"/",
+            "responseCode":200,
+            "body":"<html><head></head><title>Simple Mock Server test</title><body><h1>POST! It works!</h1></body></html>",
+            "headers":[
+                {
+                    "Content-Type":"text/html; charset=UTF-8"
+                }
+            ]
+        },
+        {
+            "method":"POST",
+            "path":"/status",
+            "responseCode":200,
+            "body":"{ \"type\":\"POST\", \"status\": \"OK\" }",
+            "headers":[
+                {
+                    "Content-Type":"Application/JSON"
+                }
+            ]
+        }
+    ]
+
 }
