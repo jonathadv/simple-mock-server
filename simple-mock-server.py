@@ -64,6 +64,14 @@ def SimpleHandlerFactory(configuration):
             response = self.retrive_response(self.path, 'POST')
             self.send(self.path, response)
 
+        def do_DELETE(self):
+            response = self.retrive_response(self.path, 'DELETE')
+            self.send(self.path, response)
+
+        def do_PUT(self):
+            response = self.retrive_response(self.path, 'PUT')
+            self.send(self.path, response)
+
         def send(self, path, response):
             self.send_response(response.responseCode)
 

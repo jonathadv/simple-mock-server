@@ -1,7 +1,7 @@
 {
 
     "hostname":"127.0.0.1",
-    "port":8124,
+    "port":8080,
     "responses":[
         {
             "method":"GET",
@@ -26,21 +26,43 @@
             ]
         },
         {
-            "method":"POST",
-            "path":"/",
-            "responseCode":200,
-            "body":"<html><head></head><title>Simple Mock Server test</title><body><h1>POST! It works!</h1></body></html>",
+            "method":"GET",
+            "path":"/redirect",
+            "responseCode":302,
+            "body":null,
             "headers":[
                 {
-                    "Content-Type":"text/html; charset=UTF-8"
+                    "location":"https://github.com/jonathadv/simple-mock-server"
                 }
             ]
         },
         {
             "method":"POST",
-            "path":"/status",
+            "path":"/add",
+            "responseCode":201,
+            "body":"{ \"type\":\"POST\", \"status\": \"Created!\" }",
+            "headers":[
+                {
+                    "Content-Type":"Application/JSON"
+                }
+            ]
+        },
+        {
+            "method":"PUT",
+            "path":"/update",
             "responseCode":200,
-            "body":"{ \"type\":\"POST\", \"status\": \"OK\" }",
+            "body":"{ \"type\":\"PUT\", \"status\": \"updated!\" }",
+            "headers":[
+                {
+                    "Content-Type":"Application/JSON"
+                }
+            ]
+        },
+        {
+            "method":"DELETE",
+            "path":"/remove",
+            "responseCode":200,
+            "body":"{ \"type\":\"DELETE\", \"status\": \"Removed!\" }",
             "headers":[
                 {
                     "Content-Type":"Application/JSON"
