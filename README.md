@@ -11,7 +11,7 @@ No `pip install`, no high-version-specific dependencies! Just run it as regular 
 * Support to any HTTP response code including the ability to HTTP redirect.
 
 ### Requirements
-* Python 2.7 (tested in Python 2.7.9)
+* Python 2.7 (tested with Python 2.7.5)
 
 ### Usage
 ```bash
