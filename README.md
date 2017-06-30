@@ -53,7 +53,7 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
 
 
 ### Configuration file sample
-```
+```json
 {
 
     "hostname":"127.0.0.1",
