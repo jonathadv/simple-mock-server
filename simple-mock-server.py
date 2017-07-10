@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 import BaseHTTPServer
 import json
-import time
-import httplib
 import os
+import time
 import sys
 
 class Configuration():
@@ -26,19 +25,20 @@ class Configuration():
 
         for response in responses:
             mocked_resp = MokedResponse(response.get('method'), response.get('path'),
-                          response.get('responseCode'), response.get('headers'), response.get('body'))
+                          response.get('responseCode'), response.get('headers'),
+                                        response.get('body'), response.get('delay'))
+
             method_map = response_map[response.get('method').upper()]
             method_map[response.get('path')] = mocked_resp
 
-
 class MokedResponse():
     def __init__(self, method=None, path=None, responseCode=None,
-                 headers=None, body=None):
-
+                 headers=None, body=None, delay=None):
         self.method = method if method else 'GET'
         self.path = path if path else '/'
         self.responseCode = responseCode if responseCode else 200
         self.headers = headers if headers else []
+        self.delay = delay if delay else 0
         self.body = self.MokedResponseBody(body)
 
     def __repr__(self):
@@ -46,8 +46,8 @@ class MokedResponse():
 
     def __str__(self):
         return 'method = [%s], path = [%s], responseCode = [%s], ' \
-               'headers = [%s], body = [%s]' % \
-               (self.method, self.path, self.responseCode, self.headers, self.body)
+               'headers = [%s], body = [%s], delay = [%s]' % \
+               (self.method, self.path, self.responseCode, self.headers, self.body, self.delay)
 
     class MokedResponseBody():
         def __init__(self, content=None):
@@ -77,6 +77,9 @@ class MokedResponse():
 
             return length if self.isFile else len(self.content)
 
+        def __str__(self):
+            return 'isFile = [%s], content = [%s]' % (self.isFile, self.content)
+
 
 def SimpleHandlerFactory(configuration):
     class SimpleHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -88,7 +91,7 @@ def SimpleHandlerFactory(configuration):
         }
 
         def do_HEAD(self):
-            self.send_response(httplib.OK)
+            self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
 
@@ -109,6 +112,8 @@ def SimpleHandlerFactory(configuration):
             self.send(self.path, response)
 
         def send(self, path, response):
+            time.sleep(response.delay)
+
             self.send_response(response.responseCode)
 
             for header in response.headers:

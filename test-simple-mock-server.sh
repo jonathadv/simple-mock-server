@@ -31,4 +31,7 @@ echo '[Redirect]'
 curl -I -X GET http://${host}:${port}/redirect; 
 
 echo '[Attachment]'
-curl -I -X GET http://${host}:${port}/attachment; echo
+curl -I -X GET http://${host}:${port}/attachment;
+
+echo '[Delayed call]'
+time curl -X GET http://${host}:${port}/delay; echo

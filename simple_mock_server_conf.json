@@ -66,6 +66,18 @@
             ]
         },
         {
+            "method":"GET",
+            "path":"/delay",
+            "responseCode":200,
+            "body":"{ \"type\":\"GET\", \"delay\": 5 }",
+            "delay":5,
+            "headers":[
+                {
+                     "Content-Type":"application/json"
+                }
+            ]
+        },
+        {
             "method":"POST",
             "path":"/add",
             "responseCode":201,

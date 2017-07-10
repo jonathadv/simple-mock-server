@@ -7,11 +7,12 @@ No `pip install`, no high-version-specific dependencies! Just run it as regular 
 
 ### Features
 * Support to methods GET, POST, PUT and DELETE.
-* Support to custom response body with any HTML/JSON/whatever-type you can put as string (maybe some string encoding issue can come up).
-* Support to any HTTP response code including the ability to HTTP redirect.
-* Support to add any custom header.
-* Support to CORS by adding the header `Access-Control-Allow-Origin`.
-* Support to load files from filesystem.
+* Any HTTP response code including the ability to HTTP redirect.
+* Custom response body with any HTML/JSON/whatever-type you can put as string (maybe some string encoding issue can come up).
+* Allow to load file from filesystem and send it as response.
+* Custom header.
+* CORS by adding the header `Access-Control-Allow-Origin`.
+* Allow to set a delay to a specific call response (useful for timeout testing)
 
 ### Requirements
 * Python 2.7 (tested with Python 2.7.5)
@@ -60,6 +61,12 @@ Content-length: 1070
 Proxy-Connection: keep-alive
 Connection: keep-alive
 
+[Delayed call]
+{ "type":"GET", "delay": 5 }
+real    0m5.024s
+user    0m0.005s
+sys     0m0.004s
+
 ```
 ### Writing a mock
 ```json
@@ -68,7 +75,8 @@ Connection: keep-alive
     "path":"/",                                                  <-- Path you want to mock
     "responseCode":200,                                          <-- HTTP code you want to return
     "body":"<html><head></head><title>Hello</h1></body></html>", <-- Content to be sent in the response body
-    "headers":[                                                  <-- The list of headers
+    "delay": 5                                                   <-- The time in seconds this call will wait before returning (optional)
+    "headers":[                                                  <-- The list of headers (can be an empty array)
         {
             "Content-Type":"text/html; charset=UTF-8"
         }
