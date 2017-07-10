@@ -3,26 +3,33 @@ import BaseHTTPServer
 import json
 import time
 import httplib
+import os
+import sys
 
 class Configuration():
     def __init__(self, hostname, port, responses):
         self.hostname = hostname
         self.port = port
-        self.get_response_map = self.build_response_map([r for r in responses if r.get('method') == 'GET'])
-        self.post_response_map = self.build_response_map([r for r in responses if r.get('method') == 'POST'])
-        self.put_response_map = self.build_response_map([r for r in responses if r.get('method') == 'PUT'])
-        self.delete_response_map = self.build_response_map([r for r in responses if r.get('method') == 'DELETE'])
+        self.get_response_map = {}
+        self.post_response_map = {}
+        self.put_response_map = {}
+        self.delete_response_map = {}
+        self._build_response_map(responses)
 
-    @staticmethod
-    def build_response_map(responses):
-        response_map = {}
+    def _build_response_map(self, responses):
+        response_map = {
+            "GET": self.get_response_map,
+            "POST": self.post_response_map,
+            "PUT": self.put_response_map,
+            "DELETE": self.delete_response_map
+        }
+
         for response in responses:
-            response_map[response.get('path')] = MokedResponse(
-                response.get('method'), response.get('path'),
-                response.get('responseCode'), response.get('headers'),
-                response.get('body'))
+            mocked_resp = MokedResponse(response.get('method'), response.get('path'),
+                          response.get('responseCode'), response.get('headers'), response.get('body'))
+            method_map = response_map[response.get('method').upper()]
+            method_map[response.get('path')] = mocked_resp
 
-        return response_map
 
 class MokedResponse():
     def __init__(self, method=None, path=None, responseCode=None,
@@ -32,7 +39,7 @@ class MokedResponse():
         self.path = path if path else '/'
         self.responseCode = responseCode if responseCode else 200
         self.headers = headers if headers else []
-        self.body = body if body else ''
+        self.body = self.MokedResponseBody(body)
 
     def __repr__(self):
         return self.__str__()
@@ -41,6 +48,35 @@ class MokedResponse():
         return 'method = [%s], path = [%s], responseCode = [%s], ' \
                'headers = [%s], body = [%s]' % \
                (self.method, self.path, self.responseCode, self.headers, self.body)
+
+    class MokedResponseBody():
+        def __init__(self, content=None):
+            self._file_definition = '@file://'
+            self.content = content if content else ''
+            self.isFile = self._file_definition in content
+
+
+        def load(self):
+            if self.isFile:
+                filename = self.content.replace(self._file_definition,'')
+                try:
+                    with open(filename) as file:
+                        return file.read()
+                except:
+                    print >> sys.stderr, 'File \'{}\' not found in filesystem.'.format(filename)
+                    return None
+            else:
+                return self.content
+
+        def __len__(self):
+            try:
+                filename = self.content.replace(self._file_definition, '')
+                length = os.stat(filename).st_size
+            except:
+                length = len('None')
+
+            return length if self.isFile else len(self.content)
+
 
 def SimpleHandlerFactory(configuration):
     class SimpleHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -79,7 +115,7 @@ def SimpleHandlerFactory(configuration):
                 self.send_header(header.keys()[0], header.values()[0])
             self.send_header('Content-length',str(len(response.body)))
             self.end_headers()
-            self.wfile.write(response.body)
+            self.wfile.write(response.body.load())
 
 
         def retrive_response(self, path, method):
