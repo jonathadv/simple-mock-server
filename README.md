@@ -1,4 +1,4 @@
-kate sim        # simple-mock-server
+# simple-mock-server
 Simple server to mock HTTP response
 
 The idea is to have the simplest HTTP server with the simplest configuration, which you can run anywhere with Python2 installed, and with all the useful resources in a mock server.
