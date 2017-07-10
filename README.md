@@ -11,6 +11,7 @@ No `pip install`, no high-version-specific dependencies! Just run it as regular 
 * Support to any HTTP response code including the ability to HTTP redirect.
 * Support to add any custom header.
 * Support to CORS by adding the header `Access-Control-Allow-Origin`.
+* Support to load files from filesystem.
 
 ### Requirements
 * Python 2.7 (tested with Python 2.7.5)
@@ -34,17 +35,77 @@ You can test the server as it is by running the file `test-simple-mock-server.sh
 Reading configuration file 'simple_mock_server_conf.json'...
 Testing calls against http://127.0.0.1:8080...
 
+[HTTP Methods]
 { "type":"GET", "status": "OK" }
 { "type":"POST", "status": "Created!" }
 { "type":"PUT", "status": "updated!" }
 { "type":"DELETE", "status": "Removed!" }
 
+[Redirect]
 HTTP/1.0 302 Found
-Server: BaseHTTP/0.3 Python/2.7.9
-Date: Thu, 29 Jun 2017 05:00:44 GMT
-Content-Type: Application/JSON
+Server: BaseHTTP/0.3 Python/2.7.6
+Date: Mon, 10 Jul 2017 21:41:30 GMT
+Content-Type: application/json
 location: https://github.com/jonathadv/simple-mock-server
+Content-length: 19
+Proxy-Connection: keep-alive
+Connection: keep-alive
 
+[Attachment]
+HTTP/1.0 200 OK
+Server: BaseHTTP/0.3 Python/2.7.6
+Date: Mon, 10 Jul 2017 21:41:30 GMT
+Content-Disposition: attachment; filename="LICENSE.txt"
+Content-length: 1070
+Proxy-Connection: keep-alive
+Connection: keep-alive
+
+```
+### Writing a mock
+```json
+{
+    "method":"GET",                                              <-- HTTP method you want to use
+    "path":"/",                                                  <-- Path you want to mock
+    "responseCode":200,                                          <-- HTTP code you want to return
+    "body":"<html><head></head><title>Hello</h1></body></html>", <-- Content to be sent in the response body
+    "headers":[                                                  <-- The list of headers
+        {
+            "Content-Type":"text/html; charset=UTF-8"
+        }
+    ]
+}
+```
+### Loading files from filesystem
+To load files from filesystem, fill the `body` property with the notation ` @file://` followed by the file path. Like: `body: "@file:///home/user/my_pic.png"`.
+You can manipulate the browser behavior when downloading the file by using the headers like `"Content-Type":"image/png"` and `"Content-Disposition": "attachment; filename=\"my_pic.png\""` and so on.
+
+** Example #1 **
+```
+{
+    "method":"GET",
+    "path":"/my_pic.png",
+    "responseCode":200,
+    "body":"@file:///home/user/my_pic.png",
+    "headers":[
+        {
+            "Content-Type": "image/png"
+        }
+    ]
+}
+```
+** Example #2 **
+```
+{
+    "method":"GET",
+    "path":"/attachment",
+    "responseCode":200,
+    "body":"@file:///home/user/my_pic.png",
+    "headers":[
+        {
+            "Content-Disposition": "attachment; filename=\"my_pic.png\""
+        }
+    ]
+}
 ```
 
 
@@ -111,6 +172,17 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
             ]
         },
         {
+            "method":"GET",
+            "path":"/attachment",
+            "responseCode":200,
+            "body":"@file://./LICENSE.txt",
+            "headers":[
+                {
+                    "Content-Disposition": "attachment; filename=\"LICENSE.txt\""
+                }
+            ]
+        },
+        {
             "method":"POST",
             "path":"/add",
             "responseCode":201,
@@ -148,11 +220,11 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
 }
 
 ```
+
 ---
 ### TODO List
 * Support to path variable like `/some/{variable}/path`
 * Code documentation
 * Test encoding support
-* Add support to reply with binary content
 * Support to response delay (for timeout testing)
 * Support to different responses to the same endipoint call (e.g., get 200 for two calls and 404 for the next one and so on)
