@@ -25,14 +25,14 @@ class Configuration():
         return response_map
 
 class MokedResponse():
-    def __init__(self, method='GET', path='/', responseCode=200,
+    def __init__(self, method=None, path=None, responseCode=None,
                  headers=None, body=None):
 
-        self.method = method
-        self.path = path
-        self.responseCode = responseCode
-        self.headers = headers
-        self.body = body
+        self.method = method if method else 'GET'
+        self.path = path if path else '/'
+        self.responseCode = responseCode if responseCode else 200
+        self.headers = headers if headers else []
+        self.body = body if body else ''
 
     def __repr__(self):
         return self.__str__()
@@ -77,7 +77,7 @@ def SimpleHandlerFactory(configuration):
 
             for header in response.headers:
                 self.send_header(header.keys()[0], header.values()[0])
-
+            self.send_header('Content-length',str(len(response.body)))
             self.end_headers()
             self.wfile.write(response.body)
 
@@ -103,10 +103,17 @@ def SimpleHandlerFactory(configuration):
 
 def load_configuration_file():
     file_name = 'simple_mock_server_conf.json'
+    default_host = '127.0.0.1'
+    default_port = 8000
+    default_responses = []
+
     with open(file_name) as conf_file:
         json_config = json.loads(conf_file.read())
-        configuration = Configuration(json_config.get('hostname'), json_config.get('port'),
-                                      json_config.get('responses'))
+
+    configuration = Configuration(json_config.get('hostname', default_host),
+                                  json_config.get('port', default_port),
+                                  json_config.get('responses', default_responses))
+
 
 
     return configuration
@@ -117,7 +124,7 @@ if __name__ == '__main__':
     server_class = BaseHTTPServer.HTTPServer
     httpd = server_class((config.hostname, config.port), SimpleHandlerFactory(config))
 
-    print time.asctime(), "Server Starts - %s:%s" % (config.hostname, config.port)
+    print time.asctime(), 'Server Starts - %s:%s' % (config.hostname, config.port)
 
     try:
         httpd.serve_forever()
