@@ -69,7 +69,7 @@ sys     0m0.004s
 
 ```
 ### Writing a mock
-```json
+```
 {
     "method":"GET",                                              <-- HTTP method you want to use
     "path":"/",                                                  <-- Path you want to mock
@@ -87,7 +87,8 @@ sys     0m0.004s
 To load files from filesystem, fill the `body` property with the notation ` @file://` followed by the file path. Like: `body: "@file:///home/user/my_pic.png"`.
 You can manipulate the browser behavior when downloading the file by using the headers like `"Content-Type":"image/png"` and `"Content-Disposition": "attachment; filename=\"my_pic.png\""` and so on.
 
-** Example #1 **
+**Example #1**
+Downloading a regular file (Browser may decide to display it).
 ```
 {
     "method":"GET",
@@ -101,7 +102,9 @@ You can manipulate the browser behavior when downloading the file by using the h
     ]
 }
 ```
-** Example #2 **
+
+**Example #2**
+Downloading the file as attachment.
 ```
 {
     "method":"GET",
