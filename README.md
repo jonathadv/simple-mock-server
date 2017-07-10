@@ -95,8 +95,8 @@ Downloading a regular file (Browser may decide to display it).
 }
 ```
 
-Downloading the file as attachment.
 **Example #2**
+Downloading the file as attachment.
 ```
 {
     "method":"GET",
