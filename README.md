@@ -237,5 +237,4 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
 * Support to path variable like `/some/{variable}/path`
 * Code documentation
 * Test encoding support
-* Support to response delay (for timeout testing)
 * Support to different responses to the same endipoint call (e.g., get 200 for two calls and 404 for the next one and so on)
