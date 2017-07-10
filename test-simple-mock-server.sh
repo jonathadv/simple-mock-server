@@ -20,9 +20,15 @@ fi
 echo "Testing calls against http://${host}:${port}..."
 echo
 
+echo '[HTTP Methods]'
 curl -X GET http://${host}:${port}/status; echo
 curl -X POST http://${host}:${port}/add; echo
 curl -X PUT http://${host}:${port}/update; echo
 curl -X DELETE http://${host}:${port}/remove; echo
+
 echo
-curl -I -X GET http://${host}:${port}/redirect; echo
+echo '[Redirect]'
+curl -I -X GET http://${host}:${port}/redirect; 
+
+echo '[Attachment]'
+curl -I -X GET http://${host}:${port}/attachment; echo
