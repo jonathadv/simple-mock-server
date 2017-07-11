@@ -3,7 +3,7 @@ Simple server to mock HTTP response
 
 The idea is to have the simplest HTTP server with the simplest configuration, which you can run anywhere with Python2 installed, and with all the useful resources in a mock server.
 
-No `pip install`, no high-version-specific dependencies! Just run it as regular Python 2 script
+No `pip install`, no high-version-specific dependencies! Just run it as regular Python 2 script.
 
 ### Features
 * Support to methods GET, POST, PUT and DELETE.
@@ -12,7 +12,7 @@ No `pip install`, no high-version-specific dependencies! Just run it as regular 
 * Allow to load file from filesystem and send it as response.
 * Custom header.
 * CORS by adding the header `Access-Control-Allow-Origin`.
-* Allow to set a delay to a specific call response (useful for timeout testing)
+* Allow to set a delay to a specific call response (useful for timeout testing).
 
 ### Requirements
 * Python 2.7 (tested with Python 2.7.5)
@@ -237,4 +237,4 @@ Open the configuration file `simple_mock_server_conf.json` and fill it with your
 * Support to path variable like `/some/{variable}/path`
 * Code documentation
 * Test encoding support
-* Support to different responses to the same endipoint call (e.g., get 200 for two calls and 404 for the next one and so on)
+* Support to different responses to the same endpoint call (e.g., get 200 for two calls and 404 for the next one and so on)
