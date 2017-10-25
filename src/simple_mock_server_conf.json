@@ -58,7 +58,7 @@
             "method":"GET",
             "path":"/attachment",
             "responseCode":200,
-            "body":"@file://./LICENSE.txt",
+            "body":"@file://../LICENSE.txt",
             "headers":[
                 {
                     "Content-Disposition": "attachment; filename=\"LICENSE.txt\""

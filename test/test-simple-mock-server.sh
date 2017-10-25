@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-config_file=simple_mock_server_conf.json
+config_file='../src/simple_mock_server_conf.json'
 
 if [[ ! -f "${config_file}" ]]; then
     echo "file ''${config_file}' not found. Nothing to do. Exiting."

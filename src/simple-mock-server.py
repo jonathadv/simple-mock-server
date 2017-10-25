@@ -1,9 +1,23 @@
 #!/usr/bin/env python
-import BaseHTTPServer
+
+# -*- coding: utf-8 -*-
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
+"""
+Simple Mock Server
+-------------------
+
+Run as a regular python script:
+$ ./simple-mock-server.py
+"""
+
 import json
 import os
-import time
 import sys
+import time
+
+import BaseHTTPServer
+
 
 class Configuration():
     def __init__(self, hostname, port, responses):
@@ -17,10 +31,10 @@ class Configuration():
 
     def _build_response_map(self, responses):
         response_map = {
-            "GET": self.get_response_map,
-            "POST": self.post_response_map,
-            "PUT": self.put_response_map,
-            "DELETE": self.delete_response_map
+            'GET': self.get_response_map,
+            'POST': self.post_response_map,
+            'PUT': self.put_response_map,
+            'DELETE': self.delete_response_map
         }
 
         for response in responses:
@@ -84,15 +98,15 @@ class MokedResponse():
 def SimpleHandlerFactory(configuration):
     class SimpleHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         response_map = {
-            "GET": configuration.get_response_map.get,
-            "POST": configuration.post_response_map.get,
-            "PUT": configuration.put_response_map.get,
-            "DELETE": configuration.delete_response_map.get
+            'GET': configuration.get_response_map.get,
+            'POST': configuration.post_response_map.get,
+            'PUT': configuration.put_response_map.get,
+            'DELETE': configuration.delete_response_map.get
         }
 
         def do_HEAD(self):
             self.send_response(200)
-            self.send_header("Content-type", "text/html")
+            self.send_header('Content-type', 'text/html')
             self.end_headers()
 
         def do_GET(self):
@@ -128,12 +142,12 @@ def SimpleHandlerFactory(configuration):
                 response = self.response_map.get(method)(path)
 
                 if response is None:
-                    body = "{ \"message\": \"path '%s' not found\" }" % path
+                    body = '{ "message": "path \'%s\' not found" }' % path
                     headers = [{"Content-Type": "Application/JSON"}]
                     response = MokedResponse(method, path, 404, headers, body)
 
             except Exception as err:
-                body = "{ \"message\": \"Some error happened while getting path '%s'\", \"cause\": \"%s\" }" % (path, str(err))
+                body = '{ "message": "Some error happened while getting path \'%s\', "cause": "%s" }' % (path, str(err))
                 headers = [{"Content-Type": "Application/JSON"}]
                 response = MokedResponse(method, path, 500, headers, body)
 
