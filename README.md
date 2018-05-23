@@ -1,12 +1,12 @@
-# simple-mock-server
-Simple server to mock HTTP response
+# Simple Mock Server
+Simple server to mock HTTP response.
 
-The idea is to have the simplest HTTP server with the simplest configuration, which you can run anywhere with Python2 installed, and with all the useful resources in a mock server.
+This project aims to be a simple HTTP server easy and fast to setup, which you can run anywhere with Python 2 installed, and with all the useful resources in a mock server.
 
-No `pip install`, no high-version-specific dependencies! Just run it as regular Python 2 script.
+No `pip install`, no dependencies! Just run it as regular Python 2 script.
 
 ### Features
-* Support to methods GET, POST, PUT and DELETE.
+* Support methods GET, POST, PUT and DELETE.
 * Any HTTP response code including the ability to HTTP redirect.
 * Custom response body with any HTML/JSON/whatever-type you can put as string (maybe some string encoding issue can come up).
 * Allow to load file from filesystem and send it as response.
@@ -17,12 +17,19 @@ No `pip install`, no high-version-specific dependencies! Just run it as regular 
 ### Requirements
 * Python 2.7 (tested with Python 2.7.5)
 
-### Usage
-```bash
-# Run as a regular python script
-./simple-mock-server.py
+### Usage (always run it as a regular python script)
 
-Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8080
+This is a regular Python 2 script made to be run from the shell.
+
+The `host` and `port` information can be set as environment variable or by adding it to `config.json` (which is the default mode). The priority is the `config.json` so, to make the environment variables to work, remove the keys `host` and `port` from `config.json`.
+ 
+
+#### Loading host and port from config.json
+```bash
+# Just run it
+./server.py
+
+Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8000
 127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /status HTTP/1.1" 200 -
 127.0.0.1 - - [29/Jun/2017 02:00:44] "POST /add HTTP/1.1" 201 -
 127.0.0.1 - - [29/Jun/2017 02:00:44] "PUT /update HTTP/1.1" 200 -
@@ -30,11 +37,28 @@ Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8080
 127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /redirect HTTP/1.1" 302 -
 
 ```
-You can test the server as it is by running the file `test-simple-mock-server.sh` right before getting it:
+
+#### Loading host and port from environment
 ```bash
-./test-simple-mock-server.sh
-Reading configuration file 'simple_mock_server_conf.json'...
-Testing calls against http://127.0.0.1:8080...
+# Set the variables HOST and PORT
+HOST=127.0.0.1 PORT=8000 ./server.py
+
+Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8000
+127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /status HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "POST /add HTTP/1.1" 201 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "PUT /update HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "DELETE /remove HTTP/1.1" 200 -
+127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /redirect HTTP/1.1" 302 -
+
+```
+
+### Test the server's default  setup 
+
+You can test the server's default setup by running the file `test.sh` right after clonig the project:
+```bash
+./test.sh
+Reading configuration file 'config.json'...
+Testing calls against http://127.0.0.1:8000...
 
 [HTTP Methods]
 { "type":"GET", "status": "OK" }
@@ -69,6 +93,10 @@ sys     0m0.004s
 
 ```
 ### Writing a mock
+
+The file `config.json` contains all mocks information and may contain `host` and `port` settings as well.
+To create a new mock, change `config.json` following the following examples. 
+
 ```
 {
     "method":"GET",                                              <-- HTTP method you want to use
@@ -120,15 +148,11 @@ Downloading the file as attachment.
 ```
 
 
-### Before running it for your own needs...
-Open the configuration file `simple_mock_server_conf.json` and fill it with your mock data following the examples.
-
-
 ### Configuration file sample
 ```json
 {
 
-    "hostname":"127.0.0.1",
+    "hostname":"0.0.0.0",
     "port":8000,
     "responses":[
         {

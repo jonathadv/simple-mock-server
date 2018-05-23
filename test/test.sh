@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-config_file='../src/simple_mock_server_conf.json'
+declare -r base_dir="$( cd "$(dirname "$0")/.." ; pwd -P )"
+declare -r config_file="${base_dir}/src/config.json"
 
 if [[ ! -f "${config_file}" ]]; then
     echo "file ''${config_file}' not found. Nothing to do. Exiting."
@@ -15,6 +16,11 @@ port=$(egrep '"port":[0-9]+' ${config_file} | cut -d ':' -f 2 | sed 's/[^0-9]//g
 if [[ -z  "${host}" || -z "${port}" ]]; then
     echo "Unable to get host or port from file '${config_file}''. Nothing to do. Exiting."
     exit 1
+fi
+
+if [[ "${host}" == '0.0.0.0' ]]; then
+    echo 'Server is listening in all interfaces, setting host as 127.0.0.1'
+    host='127.0.0.1'
 fi
 
 echo "Testing calls against http://${host}:${port}..."

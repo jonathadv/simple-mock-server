@@ -8,7 +8,7 @@ Simple Mock Server
 -------------------
 
 Run as a regular python script:
-$ ./simple-mock-server.py
+$ ./server.py
 """
 
 import json
@@ -16,8 +16,7 @@ import os
 import sys
 import time
 
-import BaseHTTPServer
-
+from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 
 class Configuration():
     def __init__(self, hostname, port, responses):
@@ -39,18 +38,18 @@ class Configuration():
 
         for response in responses:
             mocked_resp = MokedResponse(response.get('method'), response.get('path'),
-                          response.get('responseCode'), response.get('headers'),
+                          response.get('response_code'), response.get('headers'),
                                         response.get('body'), response.get('delay'))
 
             method_map = response_map[response.get('method').upper()]
             method_map[response.get('path')] = mocked_resp
 
 class MokedResponse():
-    def __init__(self, method=None, path=None, responseCode=None,
+    def __init__(self, method=None, path=None, response_code=None,
                  headers=None, body=None, delay=None):
         self.method = method if method else 'GET'
         self.path = path if path else '/'
-        self.responseCode = responseCode if responseCode else 200
+        self.response_code = response_code if response_code else 200
         self.headers = headers if headers else []
         self.delay = delay if delay else 0
         self.body = self.MokedResponseBody(body)
@@ -59,9 +58,9 @@ class MokedResponse():
         return self.__str__()
 
     def __str__(self):
-        return 'method = [%s], path = [%s], responseCode = [%s], ' \
+        return 'method = [%s], path = [%s], response_code = [%s], ' \
                'headers = [%s], body = [%s], delay = [%s]' % \
-               (self.method, self.path, self.responseCode, self.headers, self.body, self.delay)
+               (self.method, self.path, self.response_code, self.headers, self.body, self.delay)
 
     class MokedResponseBody():
         def __init__(self, content=None):
@@ -96,7 +95,7 @@ class MokedResponse():
 
 
 def SimpleHandlerFactory(configuration):
-    class SimpleHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    class SimpleHandler(BaseHTTPRequestHandler):
         response_map = {
             'GET': configuration.get_response_map.get,
             'POST': configuration.post_response_map.get,
@@ -128,7 +127,7 @@ def SimpleHandlerFactory(configuration):
         def send(self, path, response):
             time.sleep(response.delay)
 
-            self.send_response(response.responseCode)
+            self.send_response(response.response_code)
 
             for header in response.headers:
                 self.send_header(header.keys()[0], header.values()[0])
@@ -156,10 +155,10 @@ def SimpleHandlerFactory(configuration):
 
     return SimpleHandler
 
-def load_configuration_file():
-    file_name = 'simple_mock_server_conf.json'
-    default_host = '127.0.0.1'
-    default_port = 8000
+def load_configuration():
+    file_name = 'config.json'
+    default_host =  os.environ.get('HOST', '0.0.0.0')
+    default_port =  int(os.environ.get('PORT', '8000'))
     default_responses = []
 
     with open(file_name) as conf_file:
@@ -174,10 +173,8 @@ def load_configuration_file():
     return configuration
 
 if __name__ == '__main__':
-    config = load_configuration_file()
-
-    server_class = BaseHTTPServer.HTTPServer
-    httpd = server_class((config.hostname, config.port), SimpleHandlerFactory(config))
+    config = load_configuration()
+    httpd = HTTPServer((config.hostname, config.port), SimpleHandlerFactory(config))
 
     print time.asctime(), 'Server Starts - %s:%s' % (config.hostname, config.port)
 
