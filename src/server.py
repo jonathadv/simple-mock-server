@@ -11,6 +11,7 @@ Run as a regular python script:
 $ ./server.py
 """
 
+import argparse
 import json
 import os
 import sys
@@ -66,11 +67,11 @@ class MokedResponse():
         def __init__(self, content=None):
             self._file_definition = '@file://'
             self.content = content if content else ''
-            self.isFile = self._file_definition in content
+            self.is_file = self._file_definition in content
 
 
         def load(self):
-            if self.isFile:
+            if self.is_file:
                 filename = self.content.replace(self._file_definition,'')
                 try:
                     with open(filename) as file:
@@ -88,10 +89,10 @@ class MokedResponse():
             except:
                 length = len('None')
 
-            return length if self.isFile else len(self.content)
+            return length if self.is_file else len(self.content)
 
         def __str__(self):
-            return 'isFile = [%s], content = [%s]' % (self.isFile, self.content)
+            return 'is_file = [%s], content = [%s]' % (self.is_file, self.content)
 
 
 def SimpleHandlerFactory(configuration):
@@ -155,11 +156,16 @@ def SimpleHandlerFactory(configuration):
 
     return SimpleHandler
 
-def load_configuration():
-    file_name = 'config.json'
+def load_configuration(config_file=None):
     default_host =  os.environ.get('HOST', '0.0.0.0')
     default_port =  int(os.environ.get('PORT', '8000'))
     default_responses = []
+    if config_file:
+        print('Loading "%s"...' % config_file)
+        file_name = config_file
+    else:
+        print('Loading default config.json...')
+        file_name = 'config.json'
 
     with open(file_name) as conf_file:
         json_config = json.loads(conf_file.read())
@@ -172,8 +178,7 @@ def load_configuration():
 
     return configuration
 
-if __name__ == '__main__':
-    config = load_configuration()
+def main(config):
     httpd = HTTPServer((config.hostname, config.port), SimpleHandlerFactory(config))
 
     print time.asctime(), 'Server Starts - %s:%s' % (config.hostname, config.port)
@@ -185,3 +190,27 @@ if __name__ == '__main__':
 
     httpd.server_close()
     print time.asctime(), 'Server Stops - %s:%s' % (config.hostname, config.port)
+
+
+def get_opts():
+    env_var_msg = '''ENVIRONMENT VARIABLES
+    \tHOST
+    \t  Sets the host interface the server will use. It's overwritten by the configuration file.
+    \t  To use it, remove the key `host` from the configuration file.
+    \tPORT
+    \t  Sets the port the server will listen on. It's overwritten by the configuration file.
+    \t  To use it, remove the key `port` from the configuration file.
+
+    '''
+    parser = argparse.ArgumentParser(epilog=env_var_msg, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('-f', '--file', metavar='file',
+                        help='Use custom JSON configuration file.',
+                        required=False)
+
+    return parser.parse_args()
+
+
+if __name__ == '__main__':
+    args = get_opts()
+    config = load_configuration(args.file)
+    main(config)

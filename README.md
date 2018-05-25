@@ -17,24 +17,49 @@ No `pip install`, no dependencies! Just run it as regular Python 2 script.
 ### Requirements
 * Python 2.7 (tested with Python 2.7.5)
 
-### Usage (always run it as a regular python script)
+### Usage
 
 This is a regular Python 2 script made to be run from the shell.
 
-The `host` and `port` information can be set as environment variable or by adding it to `config.json` (which is the default mode). The priority is the `config.json` so, to make the environment variables to work, remove the keys `host` and `port` from `config.json`.
- 
+Basic usage is `./server.py`. The script will load the default configuration file called `config.json` from the same directory.
+
+When starting, the script looks for *host* and *port* configuration following the below priority list:
+1. Looks for `host` and `port` keys in the configuration file.
+1. Looks for `HOST` and `PORT` environment variables.
+1. Uses the fallback coniguration `host = 0.0.0.0` and `port = 8000`.
+
+To use a different configuration file, run the script with `-f` / `--file` option.
+
+To see the help, run `./server.py -h` or `./server.py --help`.
+
+```bash
+usage: server.py [-h] [-f file]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f file, --file file  Use custom JSON configuration file.
+
+ENVIRONMENT VARIABLES
+        HOST
+          Sets the host interface the server will use. It's overwritten by the configuration file.
+          To use it, remove the key `host` from the configuration file.
+        PORT
+          Sets the port the server will listen on. It's overwritten by the configuration file.
+          To use it, remove the key `port` from the configuration file.
+```
+
 
 #### Loading host and port from config.json
 ```bash
 # Just run it
 ./server.py
 
-Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8000
-127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /status HTTP/1.1" 200 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "POST /add HTTP/1.1" 201 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "PUT /update HTTP/1.1" 200 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "DELETE /remove HTTP/1.1" 200 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /redirect HTTP/1.1" 302 -
+Thu May 24 21:16:20 2018 Server Starts - 0.0.0.0:8000
+127.0.0.1 - - [24/May/2018 21:16:31] "GET /status HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "POST /add HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "PUT /update HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "DELETE /remove HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "GET /redirect HTTP/1.1" 200 -
 
 ```
 
@@ -43,18 +68,33 @@ Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8000
 # Set the variables HOST and PORT
 HOST=127.0.0.1 PORT=8000 ./server.py
 
-Thu Jun 29 02:00:41 2017 Server Starts - 127.0.0.1:8000
-127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /status HTTP/1.1" 200 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "POST /add HTTP/1.1" 201 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "PUT /update HTTP/1.1" 200 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "DELETE /remove HTTP/1.1" 200 -
-127.0.0.1 - - [29/Jun/2017 02:00:44] "GET /redirect HTTP/1.1" 302 -
+Thu May 24 21:16:20 2018 Server Starts - 127.0.0.1:8080
+127.0.0.1 - - [24/May/2018 21:16:31] "GET /status HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "POST /add HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "PUT /update HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "DELETE /remove HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "GET /redirect HTTP/1.1" 200 -
 
 ```
 
-### Test the server's default  setup 
+#### Loading custom configuration file
+```bash
+./server.py -f /some/path/custom.json
+Loading "custom.json"...
+Thu May 24 21:16:20 2018 Server Starts - 0.0.0.0:8000
+127.0.0.1 - - [24/May/2018 21:16:31] "GET /status HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "POST /add HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "PUT /update HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "DELETE /remove HTTP/1.1" 200 -
+127.0.0.1 - - [24/May/2018 21:16:31] "GET /redirect HTTP/1.1" 200 -
 
-You can test the server's default setup by running the file `test.sh` right after clonig the project:
+
+```
+
+
+### Test the server's default  setup
+
+You can test the server's default setup by running the file `./test/test.sh` right after clonig the project:
 ```bash
 ./test.sh
 Reading configuration file 'config.json'...
@@ -95,7 +135,7 @@ sys     0m0.004s
 ### Writing a mock
 
 The file `config.json` contains all mocks information and may contain `host` and `port` settings as well.
-To create a new mock, change `config.json` following the following examples. 
+To create a new mock, change `config.json` following the examples.
 
 ```
 {
