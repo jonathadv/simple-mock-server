@@ -26,7 +26,7 @@ Basic usage is `./server.py`. The script will load the default configuration fil
 When starting, the script looks for *host* and *port* configuration following the below priority list:
 1. Looks for `host` and `port` keys in the configuration file.
 1. Looks for `HOST` and `PORT` environment variables.
-1. Uses the fallback coniguration `host = 0.0.0.0` and `port = 8000`.
+1. Uses the fallback configuration `host = 0.0.0.0` and `port = 8000`.
 
 To use a different configuration file, run the script with `-f` / `--file` option.
 
