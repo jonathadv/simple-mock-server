@@ -1,5 +1,5 @@
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/driloader) 
-[![python versions](https://img.shields.io/badge/python-2.6,%202.7-blue.svg)](https://pypi.python.org/pypi/driloader)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jonathadv/simple-mock-server)
+[![python versions](https://img.shields.io/badge/python-2.6,%202.7-blue.svg)](https://github.com/jonathadv/simple-mock-server)
 [![Build Status](https://api.travis-ci.org/jonathadv/simple-mock-server.svg?branch=master)](https://travis-ci.org/jonathadv/simple-mock-server)
 
 # Simple Mock Server
