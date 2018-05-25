@@ -1,3 +1,7 @@
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/driloader) 
+[![python versions](https://img.shields.io/badge/python-2.6,%202.7-blue.svg)](https://pypi.python.org/pypi/driloader)
+[![Build Status](https://api.travis-ci.org/jonathadv/simple-mock-server.svg?branch=master)](https://travis-ci.org/jonathadv/simple-mock-server)
+
 # Simple Mock Server
 Simple server to mock HTTP response.
 
@@ -13,9 +17,6 @@ No `pip install`, no dependencies! Just run it as regular Python 2 script.
 * Custom header.
 * CORS by adding the header `Access-Control-Allow-Origin`.
 * Allow to set a delay to a specific call response (useful for timeout testing).
-
-### Requirements
-* Python 2.7 (tested with Python 2.7.5)
 
 ### Usage
 

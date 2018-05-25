@@ -77,7 +77,7 @@ class MokedResponse():
                     with open(filename) as file:
                         return file.read()
                 except:
-                    print >> sys.stderr, 'File \'{}\' not found in filesystem.'.format(filename)
+                    print >> sys.stderr, ('File \'%s\' not found in filesystem.' % filename)
                     return None
             else:
                 return self.content
