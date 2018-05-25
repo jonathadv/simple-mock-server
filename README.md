@@ -18,9 +18,6 @@ No `pip install`, no dependencies! Just run it as regular Python 2 script.
 * CORS by adding the header `Access-Control-Allow-Origin`.
 * Allow to set a delay to a specific call response (useful for timeout testing).
 
-### Requirements
-* Python 2.7 (tested with Python 2.7.5)
-
 ### Usage
 
 This is a regular Python 2 script made to be run from the shell.
