@@ -64,9 +64,9 @@ class MokedResponse:
     ):
         self.method = method if method else "GET"
         self.path = path if path else "/"
-        self.response_code = response_code if response_code else 200
-        self.headers = headers if headers else []
-        self.delay = delay if delay else 0
+        self.response_code = response_code or 200
+        self.headers = headers or []
+        self.delay = delay or 0
         self.body = self.MokedResponseBody(body)
 
     def __repr__(self):
