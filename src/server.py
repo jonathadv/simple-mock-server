@@ -42,7 +42,7 @@ class Configuration:
             mocked_resp = MokedResponse(
                 response.get("method"),
                 response.get("path"),
-                response.get("response_code"),
+                response.get("responseCode"),
                 response.get("headers"),
                 response.get("body"),
                 response.get("delay"),
