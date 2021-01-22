@@ -12,7 +12,7 @@ No `pip install`, no dependencies! Just run it as regular Python 2 script.
 ### Features
 * Support methods GET, POST, PUT and DELETE.
 * Any HTTP response code including the ability to HTTP redirect.
-* Custom response body with any HTML/JSON/whatever-type you can put as string (maybe some string encoding issue can come up).
+* Custom response body with any HTML/JSON/whatever-type you can put as string.
 * Allow to load file from filesystem and send it as response.
 * Custom header.
 * CORS by adding the header `Access-Control-Allow-Origin`.
