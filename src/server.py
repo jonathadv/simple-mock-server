@@ -104,7 +104,7 @@ class MokedResponse:
                     )
                     return None
             else:
-                return self.content
+                return self.content.encode('utf-8')
 
         def __len__(self):
             try:
