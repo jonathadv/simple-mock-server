@@ -16,6 +16,17 @@
         },
         {
             "method":"GET",
+            "path":"/encoding",
+            "responseCode":200,
+            "body":"<html><head></head><title>Encoded Content</title><body><h1>œžŸ-¡¢£¤¥¦§¨©ª-¬­®¯°-²³´µ·¸¹º-¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ</h1></body></html>",
+            "headers":[
+                {
+                    "Content-Type":"text/html; charset=UTF-8"
+                }
+            ]
+        },
+        {
+            "method":"GET",
             "path":"/cors-test",
             "body":"{ \"type\":\"GET\", \"status\": \"OK\", \"message\": \"CORS worked!\" }",
             "responseCode":200,

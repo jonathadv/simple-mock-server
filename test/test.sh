@@ -50,6 +50,9 @@ function test() {
     curl -X DELETE http://${host}:${port}/remove; echo
 
     echo
+    echo '[Encoding]'
+    curl -I -X GET http://${host}:${port}/encoding;
+
     echo '[Redirect]'
     curl -I -X GET http://${host}:${port}/redirect; 
 
