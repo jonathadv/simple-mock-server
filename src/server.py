@@ -17,7 +17,30 @@ import os
 import sys
 import time
 
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+try:
+    from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+except:
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+ENV_VARS_MSG = """
+ENVIRONMENT VARIABLES
+HOST
+    Sets the host interface the server will use. It's overwritten by the configuration file.
+    To use it, remove the key `host` from the configuration file.
+PORT
+    Sets the port the server will listen on. It's overwritten by the configuration file.
+    To use it, remove the key `port` from the configuration file.
+"""
+
+def logger_info(msg):
+    print(msg)
+
+
+def logger_error(msg):
+    try:
+        print >> sys.stderr, msg
+    except SyntaxError:
+        print(msg, file=sys.stderr)
 
 
 class Configuration:
@@ -96,12 +119,10 @@ class MokedResponse:
             if self.is_file:
                 filename = self.content.replace(self._file_definition, "")
                 try:
-                    with open(filename) as file:
+                    with open(filename, 'rb') as file:
                         return file.read()
                 except:
-                    print >> sys.stderr, (
-                        "File '%s' not found in filesystem." % filename
-                    )
+                    logger_error("File '%s' not found in filesystem." % filename)
                     return None
             else:
                 return self.content.encode('utf-8')
@@ -158,7 +179,8 @@ def SimpleHandlerFactory(configuration):
             self.send_response(response.response_code)
 
             for header in response.headers:
-                self.send_header(header.keys()[0], header.values()[0])
+                for key, value in header.items():
+                    self.send_header(key, value)
             self.send_header("Content-length", str(len(response.body)))
             self.end_headers()
             self.wfile.write(response.body.load())
@@ -190,10 +212,10 @@ def load_configuration(config_file=None):
     default_port = int(os.environ.get("PORT", "8000"))
     default_responses = []
     if config_file:
-        print ('Loading "%s"...' % config_file)
+        logger_info ('Loading "%s"...' % config_file)
         file_name = config_file
     else:
-        print ("Loading default config.json...")
+        logger_info ("Loading default config.json...")
         file_name = "config.json"
 
     with open(file_name) as conf_file:
@@ -213,10 +235,10 @@ def main(config):
         (config.hostname, config.port), SimpleHandlerFactory(config)
     )
 
-    print time.asctime(), "Server Starts - %s:%s" % (
+    logger_info((time.asctime(), "Server Starts - %s:%s" % (
         config.hostname,
         config.port,
-    )
+    )))
 
     try:
         httpd.serve_forever()
@@ -224,24 +246,15 @@ def main(config):
         pass
 
     httpd.server_close()
-    print time.asctime(), "Server Stops - %s:%s" % (
+    logger_info((time.asctime(), "Server Stops - %s:%s" % (
         config.hostname,
         config.port,
-    )
+    )))
 
 
 def get_opts():
-    env_var_msg = """ENVIRONMENT VARIABLES
-    \tHOST
-    \t  Sets the host interface the server will use. It's overwritten by the configuration file.
-    \t  To use it, remove the key `host` from the configuration file.
-    \tPORT
-    \t  Sets the port the server will listen on. It's overwritten by the configuration file.
-    \t  To use it, remove the key `port` from the configuration file.
-
-    """
     parser = argparse.ArgumentParser(
-        epilog=env_var_msg,
+        epilog=ENV_VARS_MSG,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
