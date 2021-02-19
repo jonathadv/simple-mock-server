@@ -37,10 +37,7 @@ def logger_info(msg):
 
 
 def logger_error(msg):
-    try:
-        print >> sys.stderr, msg
-    except SyntaxError:
-        print(msg, file=sys.stderr)
+    sys.stderr.write('[ERROR] - ' + msg + '\n')
 
 
 class Configuration:
